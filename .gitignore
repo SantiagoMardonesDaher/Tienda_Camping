@@ -58,3 +58,4 @@ build/
 ### VS Code ###
 .vscode/
 db81c0b (Initial commit: Spring Boot setup)
+**/application.properties
