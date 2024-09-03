@@ -13,8 +13,6 @@ import lombok.AllArgsConstructor;
 
 import jakarta.persistence.OneToOne;
 
-import lombok.AllArgsConstructor;
-
 import lombok.Data;
 
 @Data
@@ -22,12 +20,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Product {
 
-    public Product(String description, Float price, int stock) {
-
     public Product() {
     }
-
-    public Product(String descpription, Float price, int stock) {
 
     public Product(String description, Float price, int stock) {
 
@@ -54,16 +48,12 @@ public class Product {
     private Category category;
 
     @OneToOne
-    private ProductOrder productOrder;
-
-    // @OneToMany(mappedBy = "product")
-    // private OrderItems OrderItems;
+    private Order productOrder;
 
     @OneToMany(mappedBy = "product")
     private OrderItem OrderItem;
 
     @OneToMany
     private Order order;
-
 
 }
