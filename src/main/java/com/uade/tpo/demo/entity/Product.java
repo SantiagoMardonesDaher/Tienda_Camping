@@ -40,13 +40,9 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-<<<<<<< HEAD
-    private OrderItem OrderItems;
+    private OrderItem OrderItem;
 
     @OneToMany
     private Order order;
-=======
-    private OrderItem OrderItem;
->>>>>>> 1a876421afaaac2f71194e6695e5072e7845ed31
 
 }
