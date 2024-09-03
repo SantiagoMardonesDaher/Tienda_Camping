@@ -8,11 +8,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @Entity
+@AllArgsConstructor
 public class Product {
+
+    public Product(String description, Float price, int stock) {
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,8 +39,7 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-
-     @OneToMany(mappedBy = "product")
-     private OrderItem OrderItems;
+    @OneToMany(mappedBy = "product")
+    private OrderItem OrderItem;
 
 }
