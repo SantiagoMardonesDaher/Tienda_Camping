@@ -8,11 +8,8 @@ import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.service.ProductService;
-import com.uade.tpo.demo.service.ProductServiceImpl;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,7 @@ public class ProductsController {
     public ResponseEntity<Object> createProduct(@RequestBody ProductRequest ProductRequest)
             throws ProductDuplicateException {
         Product result = ProductService.createProduct(ProductRequest.getDescription(), ProductRequest.getPrice(),
-                ProductRequest.getStock());
+                ProductRequest.getStock(), ProductRequest.getOrder());
         return ResponseEntity.created(URI.create("/products/" + result.getId())).body(result);
     }
 }

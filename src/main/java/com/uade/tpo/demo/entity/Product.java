@@ -8,11 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-<<<<<<< HEAD
+
 import lombok.AllArgsConstructor;
-=======
+
 import jakarta.persistence.OneToOne;
->>>>>>> 3b2a576ebace6f0578b1f79730a6ac39a398325b
+
+import lombok.AllArgsConstructor;
+
 import lombok.Data;
 
 @Data
@@ -20,14 +22,15 @@ import lombok.Data;
 @AllArgsConstructor
 public class Product {
 
-<<<<<<< HEAD
     public Product(String description, Float price, int stock) {
-=======
+
     public Product() {
     }
 
     public Product(String descpription, Float price, int stock) {
->>>>>>> 3b2a576ebace6f0578b1f79730a6ac39a398325b
+
+    public Product(String description, Float price, int stock) {
+
         this.description = description;
         this.price = price;
         this.stock = stock;
@@ -50,18 +53,17 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-<<<<<<< HEAD
-    @OneToMany(mappedBy = "product")
-    private OrderItem OrderItem;
-
-    @OneToMany
-    private Order order;
-=======
     @OneToOne
     private ProductOrder productOrder;
 
     // @OneToMany(mappedBy = "product")
     // private OrderItems OrderItems;
->>>>>>> 3b2a576ebace6f0578b1f79730a6ac39a398325b
+
+    @OneToMany(mappedBy = "product")
+    private OrderItem OrderItem;
+
+    @OneToMany
+    private Order order;
+
 
 }
