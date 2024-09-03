@@ -8,7 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
 import lombok.AllArgsConstructor;
+
+import jakarta.persistence.OneToOne;
+
+import lombok.AllArgsConstructor;
+
 import lombok.Data;
 
 @Data
@@ -17,6 +23,14 @@ import lombok.Data;
 public class Product {
 
     public Product(String description, Float price, int stock) {
+
+    public Product() {
+    }
+
+    public Product(String descpription, Float price, int stock) {
+
+    public Product(String description, Float price, int stock) {
+
         this.description = description;
         this.price = price;
         this.stock = stock;
@@ -39,10 +53,17 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
+    @OneToOne
+    private ProductOrder productOrder;
+
+    // @OneToMany(mappedBy = "product")
+    // private OrderItems OrderItems;
+
     @OneToMany(mappedBy = "product")
     private OrderItem OrderItem;
 
     @OneToMany
     private Order order;
+
 
 }
