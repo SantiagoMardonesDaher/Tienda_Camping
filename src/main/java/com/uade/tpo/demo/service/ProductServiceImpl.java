@@ -27,8 +27,12 @@ public class ProductServiceImpl implements ProductService {
         return ProductRepository.findById(ProductId);
     }
 
+<<<<<<< HEAD
     public Product createProduct(String description, float price, int stock, String order)
             throws ProductDuplicateException {
+=======
+    public Product createProduct(String description, float price, int stock) throws ProductDuplicateException {
+>>>>>>> 3b2a576ebace6f0578b1f79730a6ac39a398325b
         List<Product> categories = ProductRepository.findByDescription(description);
         if (categories.isEmpty())
             return ProductRepository.save(new Product(description, price, stock));

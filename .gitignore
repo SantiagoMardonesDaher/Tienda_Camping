@@ -58,3 +58,5 @@ build/
 ### VS Code ###
 .vscode/
 db81c0b (Initial commit: Spring Boot setup)
+
+Tienda_Camping_Old\demo\target\classes\application.properties
