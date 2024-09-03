@@ -15,6 +15,13 @@ import lombok.Data;
 @Entity
 @AllArgsConstructor
 public class Product {
+
+    public Product(String description, Float price, int stock) {
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,9 +40,13 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
+<<<<<<< HEAD
     private OrderItem OrderItems;
 
     @OneToMany
     private Order order;
+=======
+    private OrderItem OrderItem;
+>>>>>>> 1a876421afaaac2f71194e6695e5072e7845ed31
 
 }
