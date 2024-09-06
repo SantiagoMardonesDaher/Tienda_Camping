@@ -3,8 +3,6 @@ package com.uade.tpo.demo.service;
 import com.uade.tpo.demo.entity.User;
 import com.uade.tpo.demo.exceptions.UserNotFoundException;
 import com.uade.tpo.demo.repository.UserRepository;
-import com.uade.tpo.demo.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -44,7 +42,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setPassword(userDetails.getPassword());
         existingUser.setFirstName(userDetails.getFirstName());
         existingUser.setLastName(userDetails.getLastName());
-        existingUser.setRole(userDetails.getRole());
+        existingUser.setRoleEnum(userDetails.getRoleEnum());
 
         return userRepository.save(existingUser);
     }

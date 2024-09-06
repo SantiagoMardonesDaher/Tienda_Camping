@@ -14,7 +14,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,10 +44,6 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
-
- 
-    @ManyToOne
-    private Role role;
 
     @Enumerated(EnumType.STRING)
     private Role roleEnum;
