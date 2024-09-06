@@ -14,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,18 +39,23 @@ public class User implements UserDetails {
 
     private String firstName;
 
+   
     @Column(nullable = false, unique = true)
     private String lastName;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @Enumerated(EnumType.STRING)
+ 
+    @ManyToOne
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Role roleEnum;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(roleEnum.name()));
     }
 
     @Override
@@ -75,5 +81,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setPassword(String password) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
