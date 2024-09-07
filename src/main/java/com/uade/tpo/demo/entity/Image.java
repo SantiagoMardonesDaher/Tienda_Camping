@@ -1,5 +1,6 @@
 package com.uade.tpo.demo.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +17,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity // 
 @Table(name = "image_table")
 public class Image {
     @Id
