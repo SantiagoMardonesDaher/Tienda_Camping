@@ -1,25 +1,44 @@
 package com.uade.tpo.demo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor
 public class Product {
+
+    public Product() {
+    }
+
+    public Product(String description, Float price, int stock) {
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
-    @OneToOne
+    @Column(nullable = false)
+    private Float price;
+
+    @Column(nullable = false)
+    private int stock;
+
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
 }

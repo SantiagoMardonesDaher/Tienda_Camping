@@ -59,4 +59,4 @@ build/
 .vscode/
 db81c0b (Initial commit: Spring Boot setup)
 
-/src/main/resources/application.properties
+Tienda_Camping_Old\demo\target\classes\application.properties
