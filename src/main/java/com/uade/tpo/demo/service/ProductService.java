@@ -13,9 +13,7 @@ public interface ProductService {
 
     public Optional<Product> getProductById(Long ProductId);
 
-
-    public Product createProduct(String description, float price, int stock, String order)
+    public Product createProduct(String description, float price, int stock, String order, String category)
             throws ProductDuplicateException;
 
-   
 }
