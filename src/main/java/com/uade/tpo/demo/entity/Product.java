@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -35,6 +37,7 @@ public class Product {
     private int stock;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 

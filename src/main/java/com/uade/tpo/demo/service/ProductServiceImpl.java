@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.dto.ProductRequest;
+import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.repository.ProductRepository;
@@ -41,6 +42,18 @@ public class ProductServiceImpl implements ProductService {
         if (categories.isEmpty())
             return ProductRepository.save(new Product(description, price, stock, category));
         throw new ProductDuplicateException();
+    }
+
+    @Override
+    public List<Product> getProductByCategory(String categoryDescription) throws CategoryNotFoundException {
+        Category category = categoryRepository.findByDescription(categoryDescription)
+                .orElseThrow(() -> new RuntimeException(categoryDescription));
+        return ProductRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> getProductByPrice(float max, float min) {
+        return ProductRepository.filterByPrice(max, min);
     }
 
 }

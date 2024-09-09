@@ -6,14 +6,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
+import com.uade.tpo.demo.entity.dto.FilterProductRequest;
 import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.service.ProductService;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
+
 import java.net.URI;
 import java.util.Optional;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +43,16 @@ public class ProductsController {
         return ResponseEntity.ok(ProductService.getProducts(PageRequest.of(page, size)));
     }
 
+    @GetMapping("/filterByPrice")
+    public ResponseEntity<List<Product>> getMethodName(@RequestBody FilterProductRequest filterProductRequest) {
+        List<Product> products = ProductService.getProductByPrice(filterProductRequest.getMaxPrice(),
+                filterProductRequest.getMinPrice());
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/{ProductId}")
     public ResponseEntity<Product> getProductById(@PathVariable Long ProductId) {
         Optional<Product> result = ProductService.getProductById(ProductId);
@@ -46,6 +60,15 @@ public class ProductsController {
             return ResponseEntity.ok(result.get());
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable("category") String category) {
+        List<Product> products = ProductService.getProductByCategory(category);
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(products);
     }
 
     @PostMapping
