@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.uade.tpo.demo.exceptions.InsufficientStockException;
+
 
 import java.net.URI;
 import java.util.Optional;
@@ -48,7 +50,7 @@ public class OrderItemController {
         try {
             OrderItem result = orderItemService.createOrderItem(orderItemRequest);
             return ResponseEntity.created(URI.create("/order-items/" + result.getId())).body(result);
-        } catch (OrderItemDuplicateException e) {
+        } catch (OrderItemDuplicateException | InsufficientStockException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

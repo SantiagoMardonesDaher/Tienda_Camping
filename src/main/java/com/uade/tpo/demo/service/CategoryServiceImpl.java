@@ -13,6 +13,7 @@ import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.exceptions.CategoryDuplicateException;
 import com.uade.tpo.demo.repository.CategoryRepository;
 
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -30,10 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(rollbackFor = Throwable.class)
     public Category createCategory(String description) throws CategoryDuplicateException {
         List<Category> categories = categoryRepository.findByDescription(description);
-        if (categories.isEmpty()) {
-            categoryRepository.save(new Category(description));
+        if (!categories.isEmpty()) {
+            throw new CategoryDuplicateException("La categoría ya existe.");
         }
 
-        throw new CategoryDuplicateException();
+        return categoryRepository.save(new Category(description));
+
     }
 }

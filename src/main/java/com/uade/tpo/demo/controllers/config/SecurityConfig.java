@@ -45,9 +45,9 @@ public class SecurityConfig {
 
                                                 //OrderItems    
                                                 .requestMatchers(HttpMethod.GET, "/order-items/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-                                                .requestMatchers(HttpMethod.POST, "/order-items/**").hasAuthority(Role.ADMIN.name())
-                                                .requestMatchers(HttpMethod.PUT, "/order-items/**").hasAuthority(Role.ADMIN.name())
-                                                .requestMatchers(HttpMethod.DELETE, "/order-items/**").hasAuthority(Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST, "/order-items/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.PUT, "/order-items/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.DELETE, "/order-items/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                                                 
                                                 .anyRequest()
                                                 .authenticated())
