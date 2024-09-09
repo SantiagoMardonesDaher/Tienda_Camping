@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
+import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.service.ProductService;
 
 import java.net.URI;
@@ -50,7 +52,7 @@ public class ProductsController {
     public ResponseEntity<Object> createProduct(@RequestBody ProductRequest ProductRequest)
             throws ProductDuplicateException {
         Product result = ProductService.createProduct(ProductRequest.getDescription(), ProductRequest.getPrice(),
-                ProductRequest.getStock(), ProductRequest.getOrder());
+                ProductRequest.getStock(), ProductRequest.getOrder(), ProductRequest.getCategory());
         return ResponseEntity.created(URI.create("/products/" + result.getId())).body(result);
     }
 }
