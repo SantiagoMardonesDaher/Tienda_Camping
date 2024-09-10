@@ -8,12 +8,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Image;
+import com.uade.tpo.demo.entity.dto.ProductRequest;
+import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.repository.ImageRepository;
+import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.repository.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -30,6 +34,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public Page<Product> getProducts(PageRequest pageable) {
         return ProductRepository.findAll(pageable);
@@ -41,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     public Product createProduct(String description, float price, int stock, Long categoryId, Long imageId) 
+    public Product createProduct(ProductRequest productRequest)
             throws ProductDuplicateException {
 
                 List<Product> existingProducts = ProductRepository.findByDescription(description);
@@ -71,6 +79,36 @@ public class ProductServiceImpl implements ProductService {
         } else {
             throw new ProductDuplicateException();
         }
+        String productcategory = productRequest.getCategory();
+        String description = productRequest.getDescription();
+        int stock = productRequest.getStock();
+        float price = productRequest.getPrice();
+
+        Category category = categoryRepository.findByDescription(productcategory)
+                .orElseThrow(() -> new RuntimeException(productcategory));
+
+        List<Product> categories = ProductRepository.findByDescription(description);
+        if (categories.isEmpty())
+            return ProductRepository.save(new Product(description, price, stock, category));
+        throw new ProductDuplicateException();
+    }
+
+    @Override
+    public List<Product> getProductByCategory(String categoryDescription) throws CategoryNotFoundException {
+        Category category = categoryRepository.findByDescription(categoryDescription)
+                .orElseThrow(() -> new RuntimeException(categoryDescription));
+        return ProductRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> getProductByName(String description) {
+        List<Product> products = ProductRepository.findByName(description);
+        return products;
+    }
+
+    @Override
+    public List<Product> getProductByPrice(float max, float min) {
+        return ProductRepository.filterByPrice(max, min);
     }
 
 }
