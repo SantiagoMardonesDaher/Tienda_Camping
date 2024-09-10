@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
 import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
 
@@ -24,4 +23,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // Filtrado de productos categoria
     @Query(value = "select c from Product c where c.category = ?1")
     List<Product> findByCategory(Category Category);
+
+    // Busca por descripcion del producto
+    @Query(value = "select c from Product c where c.description = ?1")
+    List<Product> findByName(String name);
 }

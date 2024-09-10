@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.uade.tpo.demo.entity.Product;
+import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 
@@ -16,11 +17,13 @@ public interface ProductService {
 
         public Optional<Product> getProductById(Long ProductId);
 
-        public Product createProduct(String description, float price, int stock, String order, String category)
+        public Product createProduct(ProductRequest productRequest)
                         throws ProductDuplicateException;
 
         public List<Product> getProductByCategory(String category)
                         throws CategoryNotFoundException;
+
+        public List<Product> getProductByName(String description);
 
         public List<Product> getProductByPrice(float max, float min);
 }

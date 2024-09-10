@@ -4,15 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.dto.FilterProductRequest;
 import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
-import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.service.ProductService;
-
-import io.micrometer.core.ipc.http.HttpSender.Response;
 
 import java.net.URI;
 import java.util.Optional;
@@ -62,9 +58,18 @@ public class ProductsController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable("category") String category) {
+    @GetMapping("/category/{Category}")
+    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable("Category") String category) {
         List<Product> products = ProductService.getProductByCategory(category);
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/name/{Description}")
+    public ResponseEntity<List<Product>> getProductByName(@PathVariable("Description") String description) {
+        List<Product> products = ProductService.getProductByName(description);
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -74,8 +79,7 @@ public class ProductsController {
     @PostMapping
     public ResponseEntity<Object> createProduct(@RequestBody ProductRequest ProductRequest)
             throws ProductDuplicateException {
-        Product result = ProductService.createProduct(ProductRequest.getDescription(), ProductRequest.getPrice(),
-                ProductRequest.getStock(), ProductRequest.getOrder(), ProductRequest.getCategory());
+        Product result = ProductService.createProduct(ProductRequest);
         return ResponseEntity.created(URI.create("/products/" + result.getId())).body(result);
     }
 }

@@ -34,10 +34,17 @@ public class ProductServiceImpl implements ProductService {
         return ProductRepository.findById(ProductId);
     }
 
-    public Product createProduct(String description, float price, int stock, String order, String productcategory)
+    public Product createProduct(ProductRequest productRequest)
             throws ProductDuplicateException {
+
+        String productcategory = productRequest.getCategory();
+        String description = productRequest.getDescription();
+        int stock = productRequest.getStock();
+        float price = productRequest.getPrice();
+
         Category category = categoryRepository.findByDescription(productcategory)
                 .orElseThrow(() -> new RuntimeException(productcategory));
+
         List<Product> categories = ProductRepository.findByDescription(description);
         if (categories.isEmpty())
             return ProductRepository.save(new Product(description, price, stock, category));
@@ -49,6 +56,12 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findByDescription(categoryDescription)
                 .orElseThrow(() -> new RuntimeException(categoryDescription));
         return ProductRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> getProductByName(String description) {
+        List<Product> products = ProductRepository.findByName(description);
+        return products;
     }
 
     @Override
