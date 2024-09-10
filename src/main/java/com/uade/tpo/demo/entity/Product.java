@@ -36,7 +36,7 @@ public class Product {
     @Column(nullable = false)
     private int stock;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Relación con imagen, un producto tiene una imagen
+    @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "image_id")
     @JsonIgnore
     private Image image;
@@ -49,7 +49,5 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Image> images;
 
 }

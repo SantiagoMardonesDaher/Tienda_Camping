@@ -28,9 +28,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository ProductRepository;
     
-    @Autowired
-    private CategoryRepository CategoryRepository; 
-
+ 
     @Autowired
     private ImageRepository imageRepository;
 
@@ -47,68 +45,59 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public Product createProduct(String description, float price, int stock, Long categoryId, Long imageId) 
-    public Product createProduct(ProductRequest productRequest)
+    public Product createProduct(String description, float price, int stock, Long categoryId) 
             throws ProductDuplicateException {
 
                 List<Product> existingProducts = ProductRepository.findByDescription(description);
 
         if (existingProducts.isEmpty()) {
 
-            
             if (categoryId == null) {
                 throw new IllegalArgumentException("El ID de la categoría no debe ser nulo");
             }
-            // Buscar la categoría por su ID
-            Category category = CategoryRepository.findById(categoryId)
+       
+            Category category = categoryRepository.findById(categoryId)
                     .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada con ID: " + categoryId));
 
-            // Crear el nuevo producto con la categoría asociada
-            Product newProduct = new Product(description, price, stock);
+   
+            Product newProduct = new Product(description, price, stock,category);
             newProduct.setCategory(category);
 
-            if (imageId != null) {
-                        Image image = imageRepository.findById(imageId)
-                            .orElseThrow(() -> new EntityNotFoundException("Imagen no encontrada con ID: " + imageId));
-                        newProduct.setImage(image);
-                    }
-
-
-            // Guardar el producto
             return ProductRepository.save(newProduct);
         } else {
             throw new ProductDuplicateException();
         }
-        String productcategory = productRequest.getCategory();
-        String description = productRequest.getDescription();
-        int stock = productRequest.getStock();
-        float price = productRequest.getPrice();
-
-        Category category = categoryRepository.findByDescription(productcategory)
-                .orElseThrow(() -> new RuntimeException(productcategory));
-
-        List<Product> categories = ProductRepository.findByDescription(description);
-        if (categories.isEmpty())
-            return ProductRepository.save(new Product(description, price, stock, category));
-        throw new ProductDuplicateException();
     }
 
     @Override
-    public List<Product> getProductByCategory(String categoryDescription) throws CategoryNotFoundException {
-        Category category = categoryRepository.findByDescription(categoryDescription)
-                .orElseThrow(() -> new RuntimeException(categoryDescription));
-        return ProductRepository.findByCategory(category);
+    public List<Product> getProductByName(String name) {
+        return ProductRepository.findByName(name);
     }
 
     @Override
-    public List<Product> getProductByName(String description) {
-        List<Product> products = ProductRepository.findByName(description);
-        return products;
+public List<Product> getProductByCategory(String categoryDescription) {
+    List<Category> categories = categoryRepository.findByDescription(categoryDescription);
+    
+    if (categories.isEmpty()) {
+        throw new EntityNotFoundException("Categoría no encontrada con descripción: " + categoryDescription);
+    }
+
+    // Asumiendo que solo trabajas con la primera categoría en caso de que haya múltiples coincidencias
+    Category category = categories.get(0);
+    
+    return ProductRepository.findByCategory(category);
+}
+
+
+    @Override
+    public List<Product> getProductByPrice(float minPrice, float maxPrice) {
+        return ProductRepository.filterByPrice(minPrice, maxPrice);
     }
 
     @Override
-    public List<Product> getProductByPrice(float max, float min) {
-        return ProductRepository.filterByPrice(max, min);
+    public Product createProduct(String description, float price, int stock, Long categoryId, Long imageId)
+            throws ProductDuplicateException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createProduct'");
     }
-
 }

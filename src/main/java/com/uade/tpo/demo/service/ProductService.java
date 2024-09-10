@@ -13,18 +13,17 @@ import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 
 public interface ProductService {
-        public Page<Product> getProducts(PageRequest pageRequest);
 
-        public Optional<Product> getProductById(Long ProductId);
-
-
-    public Product createProduct(String description, float price, int stock, Long categoryId, Long imageId)
-            throws ProductDuplicateException;
-
-        public List<Product> getProductByCategory(String category)
-                        throws CategoryNotFoundException;
-
-        public List<Product> getProductByName(String description);
-
-        public List<Product> getProductByPrice(float max, float min);
-}
+        Page<Product> getProducts(PageRequest pageable);
+    
+        Optional<Product> getProductById(Long productId);
+    
+        Product createProduct(String description, float price, int stock, Long categoryId, Long imageId) throws ProductDuplicateException;
+    
+        List<Product> getProductByName(String name);
+    
+        List<Product> getProductByCategory(String category);
+    
+        List<Product> getProductByPrice(float minPrice, float maxPrice);
+    }
+    
