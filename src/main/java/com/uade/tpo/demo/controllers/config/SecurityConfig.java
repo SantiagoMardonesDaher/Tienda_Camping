@@ -49,6 +49,12 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.PUT, "/order-items/**").hasAuthority(Role.ADMIN.name())
                                                 .requestMatchers(HttpMethod.DELETE, "/order-items/**").hasAuthority(Role.ADMIN.name())
                                                 
+                                                //Order    
+                                                .requestMatchers(HttpMethod.GET, "/order/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST, "/order/**").hasAuthority(Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.PUT, "/order/**").hasAuthority(Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.DELETE, "/order/**").hasAuthority(Role.ADMIN.name())
+                                                   
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
