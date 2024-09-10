@@ -8,5 +8,5 @@ public class ProductRequest {
     private String description;
     private float price;
     private int stock;
-    private String Order;
+    private Long categoryId;  
 }

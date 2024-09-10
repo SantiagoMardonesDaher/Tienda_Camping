@@ -9,14 +9,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.demo.entity.Product;
+import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
+import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.repository.ProductRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository ProductRepository;
+    
+    @Autowired
+    private CategoryRepository CategoryRepository; 
 
     @Override
     public Page<Product> getProducts(PageRequest pageable) {
@@ -28,13 +35,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public Product createProduct(String description, float price, int stock, String order)
+    public Product createProduct(String description, float price, int stock, Long categoryId) 
             throws ProductDuplicateException {
 
-        List<Product> categories = ProductRepository.findByDescription(description);
-        if (categories.isEmpty())
-            return ProductRepository.save(new Product(description, price, stock));
-        throw new ProductDuplicateException();
+                List<Product> existingProducts = ProductRepository.findByDescription(description);
+
+        if (existingProducts.isEmpty()) {
+
+            if (categoryId == null) {
+                throw new IllegalArgumentException("El ID de la categoría no debe ser nulo");
+            }
+            // Buscar la categoría por su ID
+            Category category = CategoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada con ID: " + categoryId));
+
+            // Crear el nuevo producto con la categoría asociada
+            Product newProduct = new Product(description, price, stock);
+            newProduct.setCategory(category);
+
+            // Guardar el producto
+            return ProductRepository.save(newProduct);
+        } else {
+            throw new ProductDuplicateException();
+        }
     }
 
 }
