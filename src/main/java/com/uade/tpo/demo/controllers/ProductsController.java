@@ -53,7 +53,8 @@ public class ProductsController {
                     ProductRequest.getDescription(),
                     ProductRequest.getPrice(),
                     ProductRequest.getStock(),
-                    ProductRequest.getCategoryId()
+                    ProductRequest.getCategoryId(),
+                    ProductRequest.getImageId() 
             );
         return ResponseEntity.created(URI.create("/products/" + result.getId())).body(result);
     }

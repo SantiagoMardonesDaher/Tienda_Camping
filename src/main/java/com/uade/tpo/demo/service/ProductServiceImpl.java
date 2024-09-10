@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.Category;
+import com.uade.tpo.demo.entity.Image;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.repository.CategoryRepository;
+import com.uade.tpo.demo.repository.ImageRepository;
 import com.uade.tpo.demo.repository.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CategoryRepository CategoryRepository; 
 
+    @Autowired
+    private ImageRepository imageRepository;
+
     @Override
     public Page<Product> getProducts(PageRequest pageable) {
         return ProductRepository.findAll(pageable);
@@ -35,13 +40,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public Product createProduct(String description, float price, int stock, Long categoryId) 
+    public Product createProduct(String description, float price, int stock, Long categoryId, Long imageId) 
             throws ProductDuplicateException {
 
                 List<Product> existingProducts = ProductRepository.findByDescription(description);
 
         if (existingProducts.isEmpty()) {
 
+            
             if (categoryId == null) {
                 throw new IllegalArgumentException("El ID de la categoría no debe ser nulo");
             }
@@ -52,6 +58,13 @@ public class ProductServiceImpl implements ProductService {
             // Crear el nuevo producto con la categoría asociada
             Product newProduct = new Product(description, price, stock);
             newProduct.setCategory(category);
+
+            if (imageId != null) {
+                        Image image = imageRepository.findById(imageId)
+                            .orElseThrow(() -> new EntityNotFoundException("Imagen no encontrada con ID: " + imageId));
+                        newProduct.setImage(image);
+                    }
+
 
             // Guardar el producto
             return ProductRepository.save(newProduct);

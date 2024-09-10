@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -32,6 +34,11 @@ public class Product {
 
     @Column(nullable = false)
     private int stock;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Relación con imagen, un producto tiene una imagen
+    @JoinColumn(name = "image_id")
+    @JsonIgnore
+    private Image image;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
