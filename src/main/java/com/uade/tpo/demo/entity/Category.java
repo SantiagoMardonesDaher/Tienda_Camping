@@ -1,5 +1,6 @@
 package com.uade.tpo.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -29,7 +30,7 @@ public class Category {
     @Column
     private String description;
 
-     @JsonIgnore
+    @JsonBackReference
     @OneToOne(mappedBy = "category")
     private Product product;
 }
