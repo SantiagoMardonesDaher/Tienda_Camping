@@ -35,15 +35,11 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String name;
-
     private String password;
 
     @Column(nullable = false)
     private String firstName;
 
-   
     @Column(nullable = false)
     private String lastName;
 
@@ -63,7 +59,7 @@ public class User implements UserDetails {
         }
     }
 
-    /*prueba */
+    /* prueba */
     @Override
     public String getUsername() {
         return email;
