@@ -50,6 +50,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role roleEnum;
 
+    public Role getRoleEnum() {
+        return roleEnum;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (roleEnum != null) {
