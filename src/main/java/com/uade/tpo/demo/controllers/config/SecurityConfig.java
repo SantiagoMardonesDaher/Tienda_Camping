@@ -30,6 +30,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(req -> req
                                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                                 .requestMatchers("/error/**").permitAll()
+                                               
                                                 
                                                 //categorias
                                                 .requestMatchers(HttpMethod.GET, "/categories/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
@@ -50,10 +51,10 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.DELETE, "/order-items/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                                                 
                                                 //Order    
-                                                .requestMatchers(HttpMethod.GET, "/order/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-                                                .requestMatchers(HttpMethod.POST, "/order/**").hasAuthority(Role.ADMIN.name())
-                                                .requestMatchers(HttpMethod.PUT, "/order/**").hasAuthority(Role.ADMIN.name())
-                                                .requestMatchers(HttpMethod.DELETE, "/order/**").hasAuthority(Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.GET, "/orders/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name()) 
+                                                .requestMatchers(HttpMethod.PUT, "/orders/**").hasAuthority(Role.ADMIN.name())
+                                                .requestMatchers(HttpMethod.DELETE, "/orders/**").hasAuthority(Role.ADMIN.name())
                                                    
                                                 .anyRequest()
                                                 .authenticated())

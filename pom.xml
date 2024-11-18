@@ -97,6 +97,7 @@
 					<image>
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
 					</image>
+					                <mainClass>com.uade.tpo.demo.DemoApplication</mainClass> 
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
