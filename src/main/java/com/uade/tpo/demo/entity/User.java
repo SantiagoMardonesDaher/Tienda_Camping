@@ -35,16 +35,12 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-
     private String name;
 
     private String password;
 
-   // @Column(nullable = false)
     private String firstName;
 
-   
-    @Column(nullable = false)
     private String lastName;
 
     @OneToMany(mappedBy = "user")
@@ -93,3 +89,4 @@ public class User implements UserDetails {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
+

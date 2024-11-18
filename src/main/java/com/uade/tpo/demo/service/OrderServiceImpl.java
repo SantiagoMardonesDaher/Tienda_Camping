@@ -2,9 +2,10 @@ package com.uade.tpo.demo.service;
 
 import com.uade.tpo.demo.entity.Order;
 import com.uade.tpo.demo.repository.OrderRepository;
-import com.uade.tpo.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.uade.tpo.demo.entity.User;
+
 
 import java.util.List;
 
@@ -26,6 +27,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order saveOrder(Order order) {
+        if (order.getDiscountPercentage() != null) {
+            float discountAmount = order.getFinalPrice() * (order.getDiscountPercentage() / 100);
+            order.setFinalPriceWithDiscount(order.getFinalPrice() - discountAmount);
+        } else {
+            order.setFinalPriceWithDiscount(order.getFinalPrice());
+        }
         return orderRepository.save(order);
     }
 
@@ -33,4 +40,9 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }
+    @Override
+    public List<Order> getOrdersByUser(User user) {
+        return orderRepository.findByUser(user);
+    }
+        
 }
