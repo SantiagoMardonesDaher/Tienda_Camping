@@ -7,6 +7,7 @@ import com.uade.tpo.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,11 +23,13 @@ public class OrderController {
     @Autowired
     private UserRepository userRepository; // Agregar dependencia para obtener el usuario
 
-    @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
-    }
+@GetMapping
+@PreAuthorize("hasAuthority('ROLE_ADMIN')") // Solo para administradores
+public ResponseEntity<List<Order>> getAllOrders() {
+    List<Order> orders = orderService.getAllOrders();
+    return new ResponseEntity<>(orders, HttpStatus.OK);
+}
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
@@ -105,5 +108,8 @@ public ResponseEntity<List<Order>> getOrdersByUser(Principal principal) {
     List<Order> userOrders = orderService.getOrdersByUser(user);
     return new ResponseEntity<>(userOrders, HttpStatus.OK);
 }
+
+
+
 
 }
