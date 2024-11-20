@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
+    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,5 +47,9 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.category = category;
+        
+    }
+    public long getImageID() { 
+        return (image != null) ? image.getId() : 0; // Return 0 if image is null
     }
 }

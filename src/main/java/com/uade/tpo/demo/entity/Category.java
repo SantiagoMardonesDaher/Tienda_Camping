@@ -30,7 +30,4 @@ public class Category {
     @Column
     private String description;
 
-    @JsonBackReference
-    @OneToOne(mappedBy = "category")
-    private Product product;
 }
